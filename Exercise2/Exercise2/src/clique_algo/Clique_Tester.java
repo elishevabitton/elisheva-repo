@@ -1,35 +1,47 @@
 package clique_algo;
 
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
+import java.util.Vector;
 
 public class Clique_Tester {
-	public static int minQ = 15, maxQ=30;
-	public static double TH = 0.75;
+	public static int minQ = 6, maxQ=10;
+	public static double TH = 0.7;
 	public static String in_file = "test1.csv";
 	public static String out_file = null;
 	public static boolean Debug = true;
 	public static int MAX_CLIQUE = 100000;
 	public static boolean Convert = true;
 	
-	public Clique_Tester(String testClique[])
+	public static int [] start(double TH, int min, int max)
 	{
-		parse(testClique);
-	}
-	
-	public long start(){
-		long t0= new Date().getTime();
-		Graph G = new Graph(in_file, TH);
-		long t1= new Date().getTime();
-		System.out.println("Init Graph: "+(t1-t0)+"  ms");	
-		
-		long t2= new Date().getTime();
-		if(out_file==null)  out_file = in_file+"_"+TH+"_"+minQ+"_"+maxQ+".csv";
-		G.All_Cliques_DFS(out_file,minQ,maxQ);
-		long t3= new Date().getTime();
-		
-		
-		System.out.println("Alg3: "+(t3-t2)+"  ms");
-		return t3-t2;
+			int [] answer = new int [2];
+			long t0= new Date().getTime();
+			Graph G = new Graph(in_file, TH);
+			long t1= new Date().getTime();
+			System.out.println("Init Graph: "+(t1-t0)+"  ms");	
+			//Vector<VertexSet> c1 = G.All_Cliques(maxQ);
+			
+		//	Vector<VertexSet> c2 = G.All_Cliques_DFS(2,maxQ);
+			long t2= new Date().getTime();
+		//	System.out.println("Alg2: "+(t2-t1)+"  ms");
+			//printAll(c1);
+			if(out_file==null)  out_file = in_file+"_"+TH+"_"+minQ+"_"+maxQ+".csv";
+			G.All_Cliques_DFS(out_file,minQ,maxQ);
+			long t3= new Date().getTime();
+			System.out.println("Alg3: "+(t3-t2)+"  ms");
+			//write2file(c1);
+			//out_file = in_file+"_out2.txt";
+			//printAll(c2);
+			//write2file(c2);
+			
+		//}
+			answer[0]=G.get_E_size();
+			answer[1]=G.get_V().size();
+			return answer;
 	}
 	
 	public static void main(String[] args) {  // test1.csv_DG.txt  0.8 5 7
